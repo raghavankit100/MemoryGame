@@ -3,8 +3,23 @@ const cards = document.querySelectorAll('.memory-card');
 let hasFlippedCard = false;
 let lockBoard = false;
 let firstCard, secondCard;
+let Attempts=0;
+let tried= document.querySelector(".attempt")
+let ResetButton= document.querySelector(".reset")
+
+function resetAll(){
+  Attempts = 0;
+  tried.innerText = `Attempts: ${Attempts}`;
+
+  // Unflip all cards
+  cards.forEach(card => {card.classList.remove('flip'); card.lockBoard=false; card.addEventListener('click', flipCard); });
+}
+
+ResetButton.addEventListener('click',resetAll);
 
 function flipCard() {
+  Attempts++;
+  tried.innerText= `Attempts: ${Attempts}`;
   if (lockBoard) return;
   if (this === firstCard) return;
 
@@ -23,6 +38,9 @@ function flipCard() {
 
   checkForMatch();
 }
+
+
+cards.forEach(card => card.addEventListener('click', flipCard));
 
 function checkForMatch() {
   let isMatch = firstCard.dataset.framework === secondCard.dataset.framework;
@@ -60,4 +78,3 @@ function resetBoard() {
   });
 })();
 
-cards.forEach(card => card.addEventListener('click', flipCard));
